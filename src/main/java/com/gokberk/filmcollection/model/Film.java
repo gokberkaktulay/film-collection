@@ -1,17 +1,16 @@
 package com.gokberk.filmcollection.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
 @Entity
 public class Film {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-	
 	@Column(name = "Title")
-	public String title;
+	private String title;
 	
 	@Column(name = "Year")
 	private Date year;
@@ -25,15 +24,15 @@ public class Film {
 	@Column(name = "Medium")
 	private String medium;
 	
+	@ElementCollection
+	@CollectionTable(uniqueConstraints = {@UniqueConstraint(columnNames={"film_title","actors"})})
+	private List<String> actors;
+	
+	@ElementCollection
+	@CollectionTable(uniqueConstraints = {@UniqueConstraint(columnNames={"film_title","languages"})})
+	private List<String> languages;
+	
 	public Film() {}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getTitle() {
 		return title;
@@ -74,13 +73,21 @@ public class Film {
 	public void setMedium(String medium) {
 		this.medium = medium;
 	}
-	
-//	public Film(String title, Date year, String genre, String description, String medium) {
-//		this.title = title;
-//		this.year = year;
-//		this.genre = genre;
-//		this.description = description;
-//		this.medium = medium;
-//	}
-	
+
+	public List<String> getActors() {
+		return actors;
+	}
+
+	public void setActors(List<String> actors) {
+		this.actors = actors;
+	}
+
+	public List<String> getLanguages() {
+		return languages;
+	}
+
+	public void setLanguages(List<String> languages) {
+		this.languages = languages;
+	}
+		
 }

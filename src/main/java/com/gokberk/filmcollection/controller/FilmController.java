@@ -3,8 +3,11 @@ package com.gokberk.filmcollection.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,14 +21,42 @@ public class FilmController {
 	
 	@GetMapping("/films")
 	public List<Film> getAllFilms(){
+		System.out.println("get films");
 		return filmService.getAllFilms();
 	}
 	
 	@PostMapping("/films")
 	public void addFilm(@RequestBody Film film) {
-		System.out.println("Film:" + film.title);
-		System.out.println("Controller level add");
-		filmService.AddFilm(film);
+		filmService.addFilm(film);
 	}
 	
+	@PutMapping("films/update")
+	public void updateFilm(@RequestBody Film film) {
+		filmService.updateFilm(film);
+	}
+
+	@DeleteMapping("/films")
+	public void removeFilm(@RequestBody String title) {
+		filmService.removeFilm(title);
+	}
+	
+	@PutMapping("/films/actor/{title}")
+	public void addActors(@PathVariable("title") String title,@RequestBody List<String> actors) {
+		filmService.addActors(title,actors);
+	}
+	
+	@DeleteMapping("/films/actor/{title}")
+	public void removeActor(@PathVariable("title") String title,@RequestBody String actor) {
+		filmService.removeActor(title, actor);
+	}
+	
+	@PutMapping("/films/language/{title}")
+	public void addLanguages(@PathVariable("title") String title,@RequestBody List<String> languages) {
+		filmService.addActors(title,languages);
+	}
+	
+	@DeleteMapping("/films/language/{title}")
+	public void removeLanguage(@PathVariable("title") String title,@RequestBody String actor) {
+		filmService.removeActor(title, actor);
+	}
 }
