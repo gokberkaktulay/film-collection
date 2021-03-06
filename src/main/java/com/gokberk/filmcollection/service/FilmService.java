@@ -7,13 +7,17 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.gokberk.filmcollection.model.Actor;
 import com.gokberk.filmcollection.model.Film;
+import com.gokberk.filmcollection.repository.ActorRepository;
 import com.gokberk.filmcollection.repository.FilmRepository;
 
 @Service
 public class FilmService {
 	@Autowired
 	private FilmRepository filmRepository;
+	@Autowired
+	private ActorRepository actorRepository;
 	
 	// return a list of all films
 	public List<Film> getAllFilms(){
@@ -63,27 +67,29 @@ public class FilmService {
 		}
 	}
 	
-	public void addActors(String title,List<String> actors) {
+	public void addActors(String title,List<Actor> actors) {
 		try {
 			Film film = filmRepository.findById(title).get();// throws exception if record does not exist
-			List<String> filmActors = film.getActors();
+			List<Actor> filmActors = film.getActors();
 			// if a film-actor value exists, do not add it again
 			actors.forEach(actor -> {
+				actor.setFilm(film);
 				if(!filmActors.contains(actor))
-					filmActors.add(actor);		
+					actorRepository.save(actor);	
 			});
-			filmRepository.save(film);
+			
 		}
 		catch(NoSuchElementException e) {
 			System.err.println(e);
 		}
 	}
 	
-	public void removeActor(String title,String actor) {
+	public void removeActor(String title,Actor actor) {
 		try {
 			Film film = filmRepository.findById(title).get();// throws exception if record does not exist
-			if(film.getActors().remove(actor))
-				filmRepository.save(film);
+			actor.setFilm(film);
+			actorRepository.deleteByFirstNameAndLastNameAndFilm_Title(actor.getFirstName(),actor.getLastName(),title);
+			
 		}
 		catch(NoSuchElementException e) {
 			System.err.println(e);

@@ -24,15 +24,28 @@ public class Film {
 	@Column(name = "Medium")
 	private String medium;
 	
-	@ElementCollection
-	@CollectionTable(uniqueConstraints = {@UniqueConstraint(columnNames={"film_title","actors"})})
-	private List<String> actors;
+	@OneToMany(mappedBy = "film",cascade = CascadeType.ALL)
+	private List<Actor> actors;
 	
 	@ElementCollection
 	@CollectionTable(uniqueConstraints = {@UniqueConstraint(columnNames={"film_title","languages"})})
 	private List<String> languages;
 	
 	public Film() {}
+	
+	@Override
+	public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Film film = (Film) o;
+        boolean result;
+        result = this.getTitle() == film.getTitle();
+        return result;
+	}
 
 	public String getTitle() {
 		return title;
@@ -74,20 +87,20 @@ public class Film {
 		this.medium = medium;
 	}
 
-	public List<String> getActors() {
-		return actors;
-	}
-
-	public void setActors(List<String> actors) {
-		this.actors = actors;
-	}
-
 	public List<String> getLanguages() {
 		return languages;
 	}
 
 	public void setLanguages(List<String> languages) {
 		this.languages = languages;
+	}
+
+	public List<Actor> getActors() {
+		return actors;
+	}
+
+	public void setActors(List<Actor> actors) {
+		this.actors = actors;
 	}
 		
 }
