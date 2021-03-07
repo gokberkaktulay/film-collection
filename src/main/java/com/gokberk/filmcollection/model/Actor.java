@@ -6,38 +6,29 @@
 package com.gokberk.filmcollection.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames={"firstName","lastName"})})
+@IdClass(ActorPK.class)
 public class Actor{
-
-	@Id
-	@GeneratedValue
-	private int actorId;
 	
+	@Id
 	private String firstName;
 	
+	@Id
 	private String lastName;
 	
 	private String role;
 	
+	@Id
 	@ManyToOne
 	@JoinColumn(name="film_title")
 	private Film film;
 
-	public int getActorId() {
-		return actorId;
-	}
 
-	public void setActorId(int actorId) {
-		this.actorId = actorId;
-	}
 
 	public String getFirstName() {
 		return firstName;
@@ -71,13 +62,6 @@ public class Actor{
         result = result && (this.getFirstName().equals(actor.getFirstName()));
         result = result && (this.getLastName().equals(actor.getLastName()));
         return result;
-	}
-	
-	@Override
-	public String toString(){
-		String str = "ActorId: ";
-		str = str + actorId + " fn: " + firstName + " ln: " + lastName + " role: " + role + "film: " + film.getTitle();
-		return str;
 	}
 
 	public String getRole() {

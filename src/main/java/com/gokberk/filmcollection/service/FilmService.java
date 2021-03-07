@@ -3,6 +3,7 @@ package com.gokberk.filmcollection.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,7 @@ public class FilmService {
 	public void addActors(String title,List<Actor> actors) {
 		try {
 			Film film = filmRepository.findById(title).get();// throws exception if record does not exist
-			List<Actor> filmActors = film.getActors();
+			Set<Actor> filmActors = film.getActors();
 			// if a film-actor value exists, do not add it again
 			actors.forEach(actor -> {
 				actor.setFilm(film);

@@ -7,6 +7,6 @@ import com.gokberk.filmcollection.model.Actor;
 
 public interface ActorRepository extends CrudRepository<Actor, Integer> {
 	@Transactional
-	Actor deleteByFirstNameAndLastNameAndFilm_Title(String firstName, String lastName,String filmId);
+	void deleteByFirstNameAndLastNameAndFilm_Title(String firstName, String lastName,String filmId);
 
 }

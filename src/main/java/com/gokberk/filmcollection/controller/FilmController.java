@@ -41,7 +41,7 @@ public class FilmController {
 		filmService.removeFilm(title);
 	}
 	
-	@PutMapping("/films/actor/{title}")
+	@PostMapping("/films/actor/{title}")
 	public void addActors(@PathVariable("title") String title,@RequestBody List<Actor> actors) {
 		filmService.addActors(title,actors);
 	}
