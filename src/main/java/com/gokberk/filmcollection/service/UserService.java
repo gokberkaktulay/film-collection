@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.gokberk.filmcollection.model.Admin;
@@ -21,12 +22,15 @@ public class UserService {
 	private StandardUserRepository stdRepository;
 	@Autowired
 	private AdminRepository adminRepository;
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 	
 	/*
 	 * Standard User Begin
 	 */
 	public void addStdUser(StandardUser user) {
 		System.out.println(user.getFirstName());
+		user.setPassword(encoder.encode(user.getPassword()));
 		userRepository.save(user);
 	}
 	
@@ -43,6 +47,7 @@ public class UserService {
 	 * Admin Begin
 	 */
 	public void addAdmin(Admin user) {
+		user.setPassword(encoder.encode(user.getPassword()));
 		System.out.println(user.getFirstName());
 		userRepository.save(user);
 	}

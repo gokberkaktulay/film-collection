@@ -29,7 +29,7 @@ public class FilmService {
 	
 	// insert a new Film entity
 	public void addFilm(Film film) {
-		if(!filmRepository.existsById(film.getTitle()))	// do nothing if a film by same title exists
+		if(!filmRepository.existsById(film.getId()))	// do nothing if a film by same title exists
 			filmRepository.save(film);
 	}
 	
@@ -37,7 +37,7 @@ public class FilmService {
 	public void updateFilm(Film filmUpdates) {
 		if (filmUpdates.getTitle()!=null) {
 			try {
-				Film film = filmRepository.findById(filmUpdates.getTitle()).get();// throws exception if record does not exist
+				Film film = filmRepository.findById(filmUpdates.getId()).get();// throws exception if record does not exist
 				
 				if (filmUpdates.getDescription()!=null)
 					film.setDescription(filmUpdates.getDescription());
@@ -58,9 +58,9 @@ public class FilmService {
 	}
 
 	// remove a film
-	public void removeFilm(String title) {
+	public void removeFilm(long id) {
 		try {
-			Film film = filmRepository.findById(title).get();// throws exception if record does not exist
+			Film film = filmRepository.findById(id).get();// throws exception if record does not exist
 			filmRepository.delete(film);
 		}
 		catch(NoSuchElementException e) {
@@ -68,9 +68,9 @@ public class FilmService {
 		}
 	}
 	
-	public void addActors(String title,List<Actor> actors) {
+	public void addActors(long id,List<Actor> actors) {
 		try {
-			Film film = filmRepository.findById(title).get();// throws exception if record does not exist
+			Film film = filmRepository.findById(id).get();// throws exception if record does not exist
 			Set<Actor> filmActors = film.getActors();
 			// if a film-actor value exists, do not add it again
 			actors.forEach(actor -> {
@@ -85,11 +85,11 @@ public class FilmService {
 		}
 	}
 	
-	public void removeActor(String title,Actor actor) {
+	public void removeActor(long id,Actor actor) {
 		try {
-			Film film = filmRepository.findById(title).get();// throws exception if record does not exist
+			Film film = filmRepository.findById(id).get();// throws exception if record does not exist
 			actor.setFilm(film);
-			actorRepository.deleteByFirstNameAndLastNameAndFilm_Title(actor.getFirstName(),actor.getLastName(),title);
+			actorRepository.deleteByFirstNameAndLastNameAndFilm_Id(actor.getFirstName(),actor.getLastName(),id);
 			
 		}
 		catch(NoSuchElementException e) {
@@ -97,9 +97,9 @@ public class FilmService {
 		}
 	}
 	
-	public void addLanguage(String title,List<String> languages) {
+	public void addLanguage(long id,List<String> languages) {
 		try {
-			Film film = filmRepository.findById(title).get();// throws exception if record does not exist
+			Film film = filmRepository.findById(id).get();// throws exception if record does not exist
 			List<String> filmLanguages = film.getLanguages();
 			// if a film-actor value exists, do not add it again
 			languages.forEach(language -> {
@@ -113,9 +113,9 @@ public class FilmService {
 		}
 	}
 	
-	public void removeLanguage(String title,String language) {
+	public void removeLanguage(long id,String language) {
 		try {
-			Film film = filmRepository.findById(title).get();// throws exception if record does not exist
+			Film film = filmRepository.findById(id).get();// throws exception if record does not exist
 			if(film.getLanguages().remove(language))
 				filmRepository.save(film);
 		}

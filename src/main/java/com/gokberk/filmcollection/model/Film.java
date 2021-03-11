@@ -10,6 +10,10 @@ import javax.persistence.*;
 public class Film {
 
 	@Id
+	@Column(name = "id")
+	@GeneratedValue
+	private long id;
+	
 	@Column(name = "Title")
 	private String title;
 	
@@ -29,7 +33,7 @@ public class Film {
 	private Set<Actor> actors;
 	
 	@ElementCollection
-	@CollectionTable(uniqueConstraints = {@UniqueConstraint(columnNames={"film_title","languages"})})
+	@CollectionTable(uniqueConstraints = {@UniqueConstraint(columnNames={"film_id","languages"})})
 	private List<String> languages;
 	
 	public Film() {}
@@ -102,6 +106,14 @@ public class Film {
 
 	public void setActors(Set<Actor> actors) {
 		this.actors = actors;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 		
 }

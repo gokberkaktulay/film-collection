@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gokberk.filmcollection.model.Actor;
@@ -16,47 +17,48 @@ import com.gokberk.filmcollection.model.Film;
 import com.gokberk.filmcollection.service.FilmService;
 
 @RestController
+@RequestMapping("/api/films")
 public class FilmController {
 	@Autowired
 	private FilmService filmService;
 	
-	@GetMapping("/films")
+	@GetMapping
 	public List<Film> getAllFilms(){
 		return filmService.getAllFilms();
 	}
 	
-	@PostMapping("/films")
+	@PostMapping
 	public void addFilm(@RequestBody Film film) {
 		filmService.addFilm(film);
 	}
 	
-	@PutMapping("films/update")
+	@PutMapping
 	public void updateFilm(@RequestBody Film film) {
 		filmService.updateFilm(film);
 	}
 
-	@DeleteMapping("/films")
-	public void removeFilm(@RequestBody String title) {
-		filmService.removeFilm(title);
+	@DeleteMapping
+	public void removeFilm(@RequestBody long id) {
+		filmService.removeFilm(id);
 	}
 	
-	@PostMapping("/films/actor/{title}")
-	public void addActors(@PathVariable("title") String title,@RequestBody List<Actor> actors) {
-		filmService.addActors(title,actors);
+	@PostMapping("/actor/{id}")
+	public void addActors(@PathVariable("id") long id,@RequestBody List<Actor> actors) {
+		filmService.addActors(id,actors);
 	}
 	
-	@DeleteMapping("/films/actor/{title}")
-	public void removeActor(@PathVariable("title") String title,@RequestBody Actor actor) {
-		filmService.removeActor(title, actor);
+	@DeleteMapping("/actor/{id}")
+	public void removeActor(@PathVariable("id") long id,@RequestBody Actor actor) {
+		filmService.removeActor(id, actor);
 	}
 	
-	@PutMapping("/films/language/{title}")
-	public void addLanguages(@PathVariable("title") String title,@RequestBody List<String> languages) {
-		filmService.addLanguage(title,languages);
+	@PutMapping("/language/{id}")
+	public void addLanguages(@PathVariable("id") long id,@RequestBody List<String> languages) {
+		filmService.addLanguage(id,languages);
 	}
 	
-	@DeleteMapping("/films/language/{title}")
-	public void removeLanguage(@PathVariable("title") String title,@RequestBody String language) {
-		filmService.removeLanguage(title, language);
+	@DeleteMapping("/language/{id}")
+	public void removeLanguage(@PathVariable("id") long id,@RequestBody String language) {
+		filmService.removeLanguage(id, language);
 	}
 }

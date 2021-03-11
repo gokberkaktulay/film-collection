@@ -25,7 +25,7 @@ public class Actor{
 	
 	@Id
 	@ManyToOne
-	@JoinColumn(name="film_title")
+	@JoinColumn(name="film_id")
 	private Film film;
 
 

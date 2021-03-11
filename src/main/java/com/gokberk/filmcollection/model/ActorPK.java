@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class ActorPK implements Serializable {
 	private String firstName;
 	private String lastName;
-	private String film;
+	private long film;
 	
 	public String getFirstName() {
 		return firstName;
@@ -20,10 +20,10 @@ public class ActorPK implements Serializable {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public String getFilm() {
+	public long getFilm() {
 		return film;
 	}
-	public void setFilm(String film) {
+	public void setFilm(long film) {
 		this.film = film;
 	}
 }

@@ -1,9 +1,8 @@
 package com.gokberk.filmcollection.repository;
 
-import org.springframework.data.repository.CrudRepository;
-
+import org.springframework.data.jpa.repository.JpaRepository;
 import com.gokberk.filmcollection.model.Film;
 
-public interface FilmRepository extends CrudRepository<Film, String> {
+public interface FilmRepository extends JpaRepository<Film, Long> {
 
 }
