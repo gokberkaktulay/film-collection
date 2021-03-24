@@ -18,7 +18,6 @@ public class UserController {
 	
 	@PostMapping
 	public void addStdUser(@RequestBody StandardUser user) {
-		System.out.println("api requested");
 		userService.addStdUser(user);
 	}
 	

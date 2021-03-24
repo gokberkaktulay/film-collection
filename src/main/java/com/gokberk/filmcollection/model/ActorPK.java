@@ -4,21 +4,14 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class ActorPK implements Serializable {
-	private String firstName;
-	private String lastName;
+	private String name;
 	private long film;
 	
 	public String getFirstName() {
-		return firstName;
+		return name;
 	}
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this.name = firstName;
 	}
 	public long getFilm() {
 		return film;

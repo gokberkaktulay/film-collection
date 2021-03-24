@@ -1,9 +1,7 @@
 package com.gokberk.filmcollection.model;
 
-import java.util.Date;
+import java.time.Year;
 import java.util.List;
-import java.util.Set;
-
 import javax.persistence.*;
 
 @Entity
@@ -18,7 +16,7 @@ public class Film {
 	private String title;
 	
 	@Column(name = "Year")
-	private Date year;
+	private Year year;
 	
 	@Column(name = "Genre")
 	private String genre;
@@ -30,7 +28,7 @@ public class Film {
 	private String medium;
 	
 	@OneToMany(mappedBy = "film",cascade = CascadeType.ALL)
-	private Set<Actor> actors;
+	private List<Actor> actors;
 	
 	@ElementCollection
 	@CollectionTable(uniqueConstraints = {@UniqueConstraint(columnNames={"film_id","languages"})})
@@ -60,11 +58,11 @@ public class Film {
 		this.title = title;
 	}
 
-	public Date getYear() {
+	public Year getYear() {
 		return year;
 	}
 
-	public void setYear(Date year) {
+	public void setYear(Year year) {
 		this.year = year;
 	}
 
@@ -100,11 +98,11 @@ public class Film {
 		this.languages = languages;
 	}
 
-	public Set<Actor> getActors() {
+	public List<Actor> getActors() {
 		return actors;
 	}
 
-	public void setActors(Set<Actor> actors) {
+	public void setActors(List<Actor> actors) {
 		this.actors = actors;
 	}
 

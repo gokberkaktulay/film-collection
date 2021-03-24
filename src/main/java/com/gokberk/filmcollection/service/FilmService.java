@@ -3,8 +3,6 @@ package com.gokberk.filmcollection.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,25 +33,26 @@ public class FilmService {
 	
 	// update fields of a film
 	public void updateFilm(Film filmUpdates) {
-		if (filmUpdates.getTitle()!=null) {
-			try {
-				Film film = filmRepository.findById(filmUpdates.getId()).get();// throws exception if record does not exist
+
+		try {
+			System.out.println("service id " + filmUpdates.getTitle());
+			Film film = filmRepository.findById(filmUpdates.getId()).get();// throws exception if record does not exist
+			if (filmUpdates.getTitle() != null)
+				film.setTitle(filmUpdates.getTitle());
+			if (filmUpdates.getDescription()!=null)
+				film.setDescription(filmUpdates.getDescription());
+			if (filmUpdates.getGenre()!=null)
+				film.setGenre(filmUpdates.getGenre());
+			if (filmUpdates.getMedium()!=null)
+				film.setMedium(filmUpdates.getMedium());
+			if (filmUpdates.getYear()!=null)
+				film.setYear(filmUpdates.getYear());
+			System.out.println("serviced id " + film.getTitle());
+			filmRepository.save(film);
 				
-				if (filmUpdates.getDescription()!=null)
-					film.setDescription(filmUpdates.getDescription());
-				if (filmUpdates.getGenre()!=null)
-					film.setGenre(filmUpdates.getGenre());
-				if (filmUpdates.getMedium()!=null)
-					film.setMedium(filmUpdates.getMedium());
-				if (filmUpdates.getYear()!=null)
-					film.setYear(filmUpdates.getYear());
-				
-				filmRepository.save(film);
-				
-			}
-			catch(NoSuchElementException e) {
-				System.err.println(e);
-			}
+		}
+		catch(NoSuchElementException e) {
+			System.err.println(e);
 		}
 	}
 
@@ -71,12 +70,11 @@ public class FilmService {
 	public void addActors(long id,List<Actor> actors) {
 		try {
 			Film film = filmRepository.findById(id).get();// throws exception if record does not exist
-			Set<Actor> filmActors = film.getActors();
+			List<Actor> filmActors = film.getActors();
 			// if a film-actor value exists, do not add it again
 			actors.forEach(actor -> {
 				actor.setFilm(film);
-				if(!filmActors.contains(actor))
-					actorRepository.save(actor);	
+				actorRepository.save(actor);
 			});
 			
 		}
@@ -89,7 +87,7 @@ public class FilmService {
 		try {
 			Film film = filmRepository.findById(id).get();// throws exception if record does not exist
 			actor.setFilm(film);
-			actorRepository.deleteByFirstNameAndLastNameAndFilm_Id(actor.getFirstName(),actor.getLastName(),id);
+			actorRepository.deleteByNameAndFilm_Id(actor.getName(),id);
 			
 		}
 		catch(NoSuchElementException e) {
@@ -122,5 +120,11 @@ public class FilmService {
 		catch(NoSuchElementException e) {
 			System.err.println(e);
 		}
+	}
+	
+	public Film findFilm(long id) {
+		System.out.println("Film id: " + id);
+		Film film = filmRepository.findById(id).orElseThrow();
+		return film;
 	}
 }

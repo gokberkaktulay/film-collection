@@ -16,10 +16,7 @@ import javax.persistence.ManyToOne;
 public class Actor{
 	
 	@Id
-	private String firstName;
-	
-	@Id
-	private String lastName;
+	private String name;
 	
 	private String role;
 	
@@ -27,41 +24,14 @@ public class Actor{
 	@ManyToOne
 	@JoinColumn(name="film_id")
 	private Film film;
-
-
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
+	
+	// default constructor
 	public Actor() {}
 	
-	@Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Actor actor = (Actor) o;
-        boolean result;
-        result = this.getFilm().getTitle().equals(actor.getFilm().getTitle());
-        result = result && (this.getFirstName().equals(actor.getFirstName()));
-        result = result && (this.getLastName().equals(actor.getLastName()));
-        return result;
+	// constructor
+	public Actor(String name, String role) {
+		this.name = name;
+		this.role = role;
 	}
 
 	public String getRole() {
@@ -78,6 +48,19 @@ public class Actor{
 
 	public void setFilm(Film film) {
 		this.film = film;
+	}
+	
+	@Override
+	public String toString() {
+		return name + " as " + role;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

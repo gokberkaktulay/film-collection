@@ -43,13 +43,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		//http.formLogin().loginPage("/login");
 		
 		http.authorizeRequests()
-		.antMatchers("/films").authenticated()
+		//.antMatchers("/films").authenticated()
 		.anyRequest().permitAll()
 		.and()
 		.formLogin().permitAll()
 		.loginPage("/login")
 		.usernameParameter("userName")
-		.passwordParameter("password");
+		.passwordParameter("password")
+		.defaultSuccessUrl("/films");
         //.antMatchers("/").permitAll();
         //.antMatchers("/h2-console/**").permitAll();
 

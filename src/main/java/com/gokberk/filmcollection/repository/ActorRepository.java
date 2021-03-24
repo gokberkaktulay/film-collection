@@ -7,6 +7,6 @@ import com.gokberk.filmcollection.model.Actor;
 
 public interface ActorRepository extends JpaRepository<Actor, Integer> {
 	@Transactional
-	void deleteByFirstNameAndLastNameAndFilm_Id(String firstName, String lastName,long filmId);
+	void deleteByNameAndFilm_Id(String name,long filmId);
 
 }

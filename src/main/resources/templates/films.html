@@ -1,10 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html 	xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<link th:href="@{/ListStyles.css}" rel="stylesheet" />
+<title>Films</title>
 </head>
 <body>
-Hello
+<div sec:authorize="isAuthenticated()">
+      Authenticated as <span sec:authentication="name"></span></div>
+<div th:switch="${films}">
+	<h2 th:case="null">There are no films</h2>
+	<div><a th:href="@{/addFilm}">Add New Film</a>
+	</div>
+	<div th:case="*">
+		<table>
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Year</th>
+					<th>Genre</th>
+					<th>Description</th>
+					<th>Medium</th>
+					<th>Language</th>
+					<th>Actors</th>
+				</tr>
+			</thead>
+			<tbody>
+                <tr th:each="film : ${films}">
+                    <td th:text="${film.title}"></td>
+                    <td th:text="${film.year}"></td>
+                    <td th:text="${film.genre}"></td>
+                    <td th:text="${film.description}"></td>
+                    <td th:text="${film.medium}"></td>
+                    <td><div th:each="language : ${film.languages}" th:text="${language}"></div></td>
+                    <td><div th:each="actor : ${film.actors}" th:text="${actor.name} + ' as ' + ${actor.role}"></div></td>
+                    <td><a th:href="@{/editFilm/{id}(id=${film.id})}">Edit</a></td>
+                    
+                </tr>
+            </tbody>
+		</table>
+	</div>
+</div>
 </body>
 </html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html 	xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<form action="#" th:action="@{/editFilm/{id}(id =${film.id})}" th:object="${film}" method="post">
+	    <label for="Title">Title</label>
+	    <input type="text" th:field="${film.title}" id="title" placeholder="Title">
+	    <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+	    <br>
+	    <label for="Title">Year</label>
+	    <input type="text" th:field="${film.year}" id="year" placeholder="Year">
+	    <span th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span>
+	    <input type="submit" value="Edit film">
+	</form>
+</body>
+</html>

@@ -29,7 +29,6 @@ public class UserService {
 	 * Standard User Begin
 	 */
 	public void addStdUser(StandardUser user) {
-		System.out.println(user.getFirstName());
 		user.setPassword(encoder.encode(user.getPassword()));
 		userRepository.save(user);
 	}
@@ -48,7 +47,6 @@ public class UserService {
 	 */
 	public void addAdmin(Admin user) {
 		user.setPassword(encoder.encode(user.getPassword()));
-		System.out.println(user.getFirstName());
 		userRepository.save(user);
 	}
 	
