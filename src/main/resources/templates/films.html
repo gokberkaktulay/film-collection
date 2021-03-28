@@ -9,6 +9,8 @@
 <body>
 <div sec:authorize="isAuthenticated()">
       Authenticated as <span sec:authentication="name"></span></div>
+<div>Page Count: <span th:text="${films.getTotalPages()}">null</span></div>
+<div>Page Num: <span th:text="${currentPage}">null</span></div>
 <div th:switch="${films}">
 	<h2 th:case="null">There are no films</h2>
 	<div><a th:href="@{/addFilm}">Add New Film</a>
@@ -35,11 +37,28 @@
                     <td th:text="${film.medium}"></td>
                     <td><div th:each="language : ${film.languages}" th:text="${language}"></div></td>
                     <td><div th:each="actor : ${film.actors}" th:text="${actor.name} + ' as ' + ${actor.role}"></div></td>
-                    <td><a th:href="@{/editFilm/{id}(id=${film.id})}">Edit</a></td>
+                    <td>
+                    	<form th:action="@{/editFilm/{id}(id=${film.id})}" method="GET">
+                    		<button type="submit">Edit</button>
+                    	</form>
+                       	<form th:action="@{/deleteFilm/{id}(id=${film.id})}" method="POST">
+                    		<button type="submit">Delete</button>
+                    	</form>
+                    </td>
                     
                 </tr>
             </tbody>
 		</table>
+	</div>
+	<div id="pageButtons" class="buttonContainer">
+		<div id="leftButtons" class="subButtonContainer">
+			<a th:if="${currentPage}" class="button" th:href="@{/films?page=0}">&lt&lt</a>
+			<a th:if="${currentPage}" class="button" th:href="@{/films(page=(${currentPage}-1))}">&lt</a>
+		</div>
+		<div id="rightButtons" class="subButtonContainer">
+			<a th:if="${currentPage} &lt (${films.getTotalPages()}-1)" class="button" th:href="@{/films(page=(${currentPage}+1))}">&gt</a>
+			<a th:if="${currentPage} &lt (${films.getTotalPages()}-1)" class="button" th:href="@{/films(page=(${films.getTotalPages()}-1))}">&gt&gt</a>
+		</div>
 	</div>
 </div>
 </body>

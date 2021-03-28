@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.gokberk.filmcollection.model.Actor;
@@ -19,9 +21,8 @@ public class FilmService {
 	private ActorRepository actorRepository;
 	
 	// return a list of all films
-	public List<Film> getAllFilms(){
-		List<Film> films = new ArrayList<Film>();
-		filmRepository.findAll().forEach(films::add);
+	public Page<Film> getAllFilms(Pageable paging){
+		Page<Film> films = filmRepository.findAll(paging);
 		return films;
 	}
 	
@@ -35,7 +36,6 @@ public class FilmService {
 	public void updateFilm(Film filmUpdates) {
 
 		try {
-			System.out.println("service id " + filmUpdates.getTitle());
 			Film film = filmRepository.findById(filmUpdates.getId()).get();// throws exception if record does not exist
 			if (filmUpdates.getTitle() != null)
 				film.setTitle(filmUpdates.getTitle());
@@ -47,7 +47,6 @@ public class FilmService {
 				film.setMedium(filmUpdates.getMedium());
 			if (filmUpdates.getYear()!=null)
 				film.setYear(filmUpdates.getYear());
-			System.out.println("serviced id " + film.getTitle());
 			filmRepository.save(film);
 				
 		}
@@ -70,7 +69,6 @@ public class FilmService {
 	public void addActors(long id,List<Actor> actors) {
 		try {
 			Film film = filmRepository.findById(id).get();// throws exception if record does not exist
-			List<Actor> filmActors = film.getActors();
 			// if a film-actor value exists, do not add it again
 			actors.forEach(actor -> {
 				actor.setFilm(film);
@@ -123,7 +121,6 @@ public class FilmService {
 	}
 	
 	public Film findFilm(long id) {
-		System.out.println("Film id: " + id);
 		Film film = filmRepository.findById(id).orElseThrow();
 		return film;
 	}

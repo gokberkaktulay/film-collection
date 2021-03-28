@@ -1,15 +1,18 @@
 package com.gokberk.filmcollection.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClient.RequestBodySpec;
 
 import com.gokberk.filmcollection.dto.StdUserDTO;
 import com.gokberk.filmcollection.model.Film;
@@ -35,10 +38,19 @@ public class WebController {
 	}
 	
 	@RequestMapping("/films")
-	public String showFilms(Model model) {
+	public String showFilms(@RequestParam(defaultValue="0") int page ,Model model) {
 		//WebClient client = WebClient.create(URL_PREFIX);
 		//List<Film> films = client.get().uri("/api/films").retrieve().bodyToFlux(Film.class);
-		model.addAttribute("films",filmService.getAllFilms());
+		
+		Pageable paging = PageRequest.of(page,2);
+		Page<Film> films = filmService.getAllFilms(paging);
+		if (films.getTotalPages() <= page) {
+			page = 0;
+			paging = PageRequest.of(page,2);
+			films = filmService.getAllFilms(paging);
+		}
+		model.addAttribute("films", films);
+		model.addAttribute("currentPage",page);
 		return "films";
 	}
 	
@@ -46,7 +58,6 @@ public class WebController {
 	public String registrationSubmit(StdUserDTO user) {
 		WebClient client = WebClient.create(URL_PREFIX);
 		client.post().uri("/api/user").bodyValue(user).retrieve().bodyToMono(String.class).block();
-		System.out.println("api responded");
 		return "index";
 	}
 	
@@ -59,15 +70,20 @@ public class WebController {
 	public String filmEditForm(@PathVariable long id, Model model) {
 		Film film = filmService.findFilm(id);
 		model.addAttribute("film",film);
-		System.out.println("Film id cont: " + film.getId());
 		return "editFilm";
 	}
 	
 	@PostMapping("/editFilm/{id}")
 	public String filmEdit(Film film) {
-		System.out.println("edit id: " + film.getId());
 		WebClient client = WebClient.create(URL_PREFIX);
 		client.put().uri("/api/films").bodyValue(film).retrieve().bodyToMono(String.class).block();
+		return "redirect:/films";
+	}
+	
+	@PostMapping("/deleteFilm/{id}")
+	public String deleteFilm(@PathVariable long id) {
+		WebClient client = WebClient.create(URL_PREFIX);
+		((RequestBodySpec) client.delete().uri("/api/films")).bodyValue(Long.valueOf(id)).retrieve().bodyToMono(String.class).block();
 		return "redirect:/films";
 	}
 	

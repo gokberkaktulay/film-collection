@@ -82,6 +82,31 @@ public class Startup implements ApplicationRunner {
 		film.setDescription("Some film");
 		filmService.addFilm(film);
 		filmService.addActors(film.getId(), actors);
+		
+		actors = new ArrayList<Actor>();
+		actors.add(new Actor("Actor TF","**"));
+		film = new Film();
+		film.setTitle("AB");
+		film.setYear(Year.of(1967));
+		film.setGenre("Steampunk");
+		film.setMedium("*");
+		film.setLanguages(Arrays.asList("English"));
+		film.setDescription("Some film");
+		filmService.addFilm(film);
+		filmService.addActors(film.getId(), actors);
+		
+		actors = new ArrayList<Actor>();
+		actors.add(new Actor("Actor Dar","**"));
+		actors.add(new Actor("Actor Ghtr","***"));
+		film = new Film();
+		film.setTitle("Cgr");
+		film.setYear(Year.of(1980));
+		film.setGenre("Drama");
+		film.setMedium("*");
+		film.setLanguages(Arrays.asList("German"));
+		film.setDescription("Some film");
+		filmService.addFilm(film);
+		filmService.addActors(film.getId(), actors);
 
 		
 	}
