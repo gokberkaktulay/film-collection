@@ -1,6 +1,5 @@
 package com.gokberk.filmcollection.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,12 @@ public class FilmService {
 	// return a list of all films
 	public Page<Film> getAllFilms(Pageable paging){
 		Page<Film> films = filmRepository.findAll(paging);
+		return films;
+	}
+	
+	// return a filtered list
+	public Page<Film> filterFilms(String filter, Pageable paging){
+		Page<Film> films = filmRepository.filterFilms(filter, paging);
 		return films;
 	}
 	

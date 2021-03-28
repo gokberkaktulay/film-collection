@@ -11,6 +11,12 @@
       Authenticated as <span sec:authentication="name"></span></div>
 <div>Page Count: <span th:text="${films.getTotalPages()}">null</span></div>
 <div>Page Num: <span th:text="${currentPage}">null</span></div>
+<div>Current sort: <span th:text="${sort}">null</span></div>
+<div>Next sort: <span th:text="${sort}%2+1">null</span></div>
+<form th:action="@{/films}" method="GET">
+	<input type="text" name="filter" id="filter" th:value="${filter}" placeholder="Search">
+	<input type="submit" value="Search">
+</form>
 <div th:switch="${films}">
 	<h2 th:case="null">There are no films</h2>
 	<div><a th:href="@{/addFilm}">Add New Film</a>
@@ -20,7 +26,7 @@
 			<thead>
 				<tr>
 					<th>Title</th>
-					<th><a th:href="@{/films?page=0&sort=1}">Year</a></th>
+					<th><a th:href="@{/films?page=0(sort=(${sort}%2+1))}">Year</a></th>
 					<th>Genre</th>
 					<th>Description</th>
 					<th>Medium</th>
