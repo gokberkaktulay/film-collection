@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,15 +39,27 @@ public class WebController {
 	}
 	
 	@RequestMapping("/films")
-	public String showFilms(@RequestParam(defaultValue="0") int page ,Model model) {
+	public String showFilms(@RequestParam(defaultValue="0") int page , @RequestParam(defaultValue="0") int sort, Model model) {
 		//WebClient client = WebClient.create(URL_PREFIX);
 		//List<Film> films = client.get().uri("/api/films").retrieve().bodyToFlux(Film.class);
-		
-		Pageable paging = PageRequest.of(page,2);
+		Sort sortRules;
+		switch(sort) {
+		case 0:
+			sortRules = Sort.by(Sort.Direction.ASC, "Id");
+			break;
+		case 1:
+			sortRules = Sort.by(Sort.Direction.ASC, "Year");
+			break;
+		case 2:
+			sortRules = Sort.by(Sort.Direction.DESC, "Year");
+		default:
+			sortRules = Sort.by(Sort.Direction.ASC, "Id");
+		}
+		Pageable paging = PageRequest.of(page,2,sortRules);
 		Page<Film> films = filmService.getAllFilms(paging);
 		if (films.getTotalPages() <= page) {
 			page = 0;
-			paging = PageRequest.of(page,2);
+			paging = PageRequest.of(page,2,sortRules);
 			films = filmService.getAllFilms(paging);
 		}
 		model.addAttribute("films", films);
