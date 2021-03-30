@@ -3,9 +3,7 @@ package com.gokberk.filmcollection.dto;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.gokberk.filmcollection.model.StandardUser;
-
-public class StdUserDTO extends StandardUser {
+public class StdUserDTO{
 	@NotNull
 	@NotEmpty
 	private String userName;

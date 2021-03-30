@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html 	xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>Add film</title>
+</head>
+<body>
+	<form action="#" th:action="@{/addFilm}" th:object="${film}" method="post">
+	    <label for="title">Title</label>
+	    <input type="text" name="title" placeholder="Title">
+	    <br>
+	    <label for="year">Year</label>
+	    <input type="number" min="1900" max="2099" name="year" placeholder="Year">
+	    <br>
+	    <label for="genre">Genre</label>
+	    <input type="text" name="genre" placeholder="Genre">
+	    <br>
+	    <label for="description">Description</label>
+	    <input type="text" name="description" placeholder="Description">
+	    <br>
+	    <label for="medium">Medium</label>
+	    <input type="text" name="medium" placeholder="Medium">
+	    <br>
+	    <input type="hidden" name="languages" >
+	    <input type="hidden" name="actors" >
+	    <input type="submit" value="Add film">
+	</form>
+</body>
+</html>

@@ -25,7 +25,7 @@ public class WebController {
 	@Autowired
 	private FilmService filmService;
 
-	
+	private static final int PAGE_SIZE = 10;
 	private static final String URL_PREFIX = "http://localhost:8080";
 	
 	@RequestMapping(value= {"/","home","index"})
@@ -34,14 +34,12 @@ public class WebController {
     }
 	
 	@RequestMapping("/register")
-	public String registration(Model model) {
+	public String registration() {
 		return "register";
 	}
 	
 	@RequestMapping("/films")
 	public String showFilms(@RequestParam(defaultValue="0") int page , @RequestParam(defaultValue="0") int sort, Model model,@RequestParam(required = false) String filter) {
-		//WebClient client = WebClient.create(URL_PREFIX);
-		//List<Film> films = client.get().uri("/api/films").retrieve().bodyToFlux(Film.class);
 		Sort sortRules;
 		switch(sort) {
 		case 0:
@@ -52,10 +50,11 @@ public class WebController {
 			break;
 		case 2:
 			sortRules = Sort.by(Sort.Direction.DESC, "Year");
+			break;
 		default:
 			sortRules = Sort.by(Sort.Direction.ASC, "id");
 		}
-		Pageable paging = PageRequest.of(page,2,sortRules);
+		Pageable paging = PageRequest.of(page,PAGE_SIZE,sortRules);
 		Page<Film> films;
 		if (filter == null)
 			films = filmService.getAllFilms(paging);
@@ -64,7 +63,7 @@ public class WebController {
 
 		if (films.getTotalPages() <= page && page > 0) {
 			page = 0;
-			paging = PageRequest.of(page,2,sortRules);
+			paging = PageRequest.of(page,PAGE_SIZE,sortRules);
 			films = filmService.getAllFilms(paging);
 		}
 		model.addAttribute("films", films);
@@ -84,6 +83,19 @@ public class WebController {
 	@RequestMapping("/login")
 	public String loginPage(Model model) {
 		return "login";
+	}
+	
+	@GetMapping("/addFilm")
+	public String filmAddForm() {
+		return "addFilm";
+	}
+	
+	@PostMapping("/addFilm")
+	public String filmAddSubmit(Film film) {
+		System.out.println(film.getTitle());
+		WebClient client = WebClient.create(URL_PREFIX);
+		client.post().uri("/api/films").bodyValue(film).retrieve().bodyToMono(String.class).block();
+		return "redirect:/films";
 	}
 	
 	@GetMapping("/editFilm/{id}")
