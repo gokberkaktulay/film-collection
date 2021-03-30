@@ -43,7 +43,6 @@ public class WebController {
 		//WebClient client = WebClient.create(URL_PREFIX);
 		//List<Film> films = client.get().uri("/api/films").retrieve().bodyToFlux(Film.class);
 		Sort sortRules;
-		System.out.println("search for " + filter);
 		switch(sort) {
 		case 0:
 			sortRules = Sort.by(Sort.Direction.ASC, "id");
@@ -63,7 +62,6 @@ public class WebController {
 		else
 			films = filmService.filterFilms(filter,paging);
 
-		System.out.println("film count " + films.getTotalElements());
 		if (films.getTotalPages() <= page && page > 0) {
 			page = 0;
 			paging = PageRequest.of(page,2,sortRules);

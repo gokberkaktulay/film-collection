@@ -1,8 +1,10 @@
 package com.gokberk.filmcollection;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.gokberk.filmcollection.model.User;
@@ -18,8 +20,9 @@ public class CustomUserDetails implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+	    authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getClass().getSimpleName().toUpperCase()));
+		return authorities;
 	}
 
 	@Override

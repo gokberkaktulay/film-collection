@@ -9,10 +9,7 @@
 <body>
 <div sec:authorize="isAuthenticated()">
       Authenticated as <span sec:authentication="name"></span></div>
-<div>Page Count: <span th:text="${films.getTotalPages()}">null</span></div>
-<div>Page Num: <span th:text="${currentPage}">null</span></div>
-<div>Current sort: <span th:text="${sort}">null</span></div>
-<div>Next sort: <span th:text="${sort}%2+1">null</span></div>
+
 <form th:action="@{/films}" method="GET">
 	<input type="text" name="filter" id="filter" th:value="${filter}" placeholder="Search">
 	<input type="submit" value="Search">
@@ -47,7 +44,7 @@
                     	<form th:action="@{/editFilm/{id}(id=${film.id})}" method="GET">
                     		<button type="submit">Edit</button>
                     	</form>
-                       	<form th:action="@{/deleteFilm/{id}(id=${film.id})}" method="POST">
+                       	<form sec:authorize="hasRole('ADMIN')" th:action="@{/deleteFilm/{id}(id=${film.id})}" method="POST">
                     		<button type="submit">Delete</button>
                     	</form>
                     </td>
